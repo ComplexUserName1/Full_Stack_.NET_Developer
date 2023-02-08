@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+    <main class="form-signin">
+
+        <img class="mb-4" src="~/images/bootstrap-logo.svg" alt="" width="72" height="57" style="margin: 0 auto;">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+            @using (Html.BeginForm("login", "Login", FormMethod.Post))
+            {
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+            }
+
+    @if (ViewBag.Message != null) //I know that this is not the best solution, but I don't have time to improve this solution yet. 
+            {                     //The whole problem is that the js script uses a variable from the C# side, namely Razor. 
+                                  //In fact, the problem is solved by simply passing a variable to a js file, but so far I don't have time to search.
+                <script type="text/javascript">
+                    window.onload = function () {
+
+                        var divZat = document.createElement("div");
+                        divZat.id = "zatemnenie";
+
+                        var divOkno = document.createElement("div");
+                        divOkno.id = "okno";
+                        divOkno.innerText = "@Html.Raw(@ViewBag.Message)";    
+
+                        divZat.appendChild(divOkno);
+
+                        var br = document.createElement("br");
+
+                        divOkno.appendChild(br);
+
+                        var a = document.createElement("a");
+                        a.href = "https://localhost:44386/";
+                        a.className = "close";
+                        a.innerHTML = "Закрыть окно";
+                        a.id = "close";
+
+                        divOkno.appendChild(a);
+
+                        var main = document.getElementsByClassName("form-container")[0];
+
+                        main.appendChild(divZat);
+
+                        if (divOkno.innerText.indexOf("ResultCode") == -1)
+                            $('#okno').css('border', '5px solid #00ff00');
+                        else
+                            $('#okno').css('border', '5px solid #ff0000');
+
+                        $('#zatemnenie').css('display', 'block');
+                    };
+                </script>
+            }
+
+    </main>
